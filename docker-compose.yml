@@ -1,0 +1,105 @@
+services:
+
+  # ── Site vitrine (Next.js) ─────────────────────────────────
+  uckin-web:
+    build:
+      context: ./my-app
+      dockerfile: Dockerfile
+    container_name: uckin-web
+    restart: always
+    environment:
+      - NODE_ENV=production
+    networks:
+      - proxy-network
+
+  # ── Espace étudiant (Next.js) ──────────────────────────────
+  uckin-portal:
+    build:
+      context: ./espace-etudiant
+      dockerfile: Dockerfile
+    container_name: uckin-portal
+    restart: always
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_AUTH_SERVICE_URL=${AUTH_PUBLIC_URL}
+      - NEXT_PUBLIC_MAIN_SITE_URL=${MAIN_SITE_URL}
+    depends_on:
+      - auth-service
+    networks:
+      - proxy-network
+
+  # ── PostgreSQL ─────────────────────────────────────────────
+  postgres:
+    image: postgres:16-alpine
+    container_name: uckin-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-uckin_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-uckin_password}
+      POSTGRES_DB: ${POSTGRES_DB:-uckin_auth}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U uckin_user -d uckin_auth"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - internal
+
+  # ── Redis ──────────────────────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    container_name: uckin-redis
+    restart: unless-stopped
+    volumes:
+      - redisdata:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - internal
+
+  # ── Auth Service (Fastify) ─────────────────────────────────
+  auth-service:
+    build:
+      context: ./Auth
+      dockerfile: Dockerfile
+    container_name: uckin-auth
+    restart: unless-stopped
+    environment:
+      PORT: 4000
+      HOST: 0.0.0.0
+      NODE_ENV: production
+      DATABASE_URL: postgresql://${POSTGRES_USER:-uckin_user}:${POSTGRES_PASSWORD:-uckin_password}@postgres:5432/${POSTGRES_DB:-uckin_auth}
+      REDIS_URL: redis://redis:6379
+      JWT_PRIVATE_KEY_PATH: ./keys/private.pem
+      JWT_PUBLIC_KEY_PATH: ./keys/public.pem
+      BCRYPT_SALT_ROUNDS: 12
+      COOKIE_DOMAIN: ${COOKIE_DOMAIN}
+      COOKIE_SECURE: "true"
+      FRONTEND_URL: ${FRONTEND_URL}
+      JWT_ACCESS_EXPIRES_IN: 15m
+      JWT_REFRESH_EXPIRES_IN: 7d
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - ./Auth/keys:/app/keys:ro
+    networks:
+      - proxy-network
+      - internal
+
+networks:
+  proxy-network:
+    external: true
+  internal:
+    driver: bridge
+
+volumes:
+  pgdata:
+  redisdata:

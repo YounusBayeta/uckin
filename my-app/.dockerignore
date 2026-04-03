@@ -1,0 +1,35 @@
+# Build output
+.next/
+out/
+
+# Dependencies (rebuilt inside Docker)
+node_modules/
+
+# Local env files
+.env*.local
+.env
+
+# Version control
+.git/
+.gitignore
+
+# Editor / OS artefacts
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# Docker files (no recursive copy)
+Dockerfile
+docker-compose*.yml
+.dockerignore
+
+# Tests / CI
+coverage/
+.github/

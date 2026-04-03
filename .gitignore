@@ -1,0 +1,16 @@
+# Env
+.env
+.env.local
+
+# Keys
+Auth/keys/
+
+# Dependencies
+node_modules/
+
+# Build outputs
+.next/
+dist/
+
+# Logs
+*.log

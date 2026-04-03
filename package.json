@@ -1,0 +1,19 @@
+{
+  "name": "uckin",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev:all": "concurrently --names \"site,etudiant,auth\" --prefix-colors \"blue,green,yellow\" \"npm run dev --prefix my-app\" \"npm run dev --prefix espace-etudiant\" \"pnpm --prefix Auth dev\"",
+    "dev:site": "npm run dev --prefix my-app",
+    "dev:etudiant": "npm run dev --prefix espace-etudiant",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}

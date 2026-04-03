@@ -1,0 +1,54 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+  --uni-primary: #1B3A5C;
+  --uni-primary-dark: #0F2440;
+  --uni-gold: #C4A35A;
+  --uni-gold-light: #D4B96E;
+  --uni-light: #F5F5F0;
+  --uni-accent: #8B2332;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-uni-primary: var(--uni-primary);
+  --color-uni-primary-dark: var(--uni-primary-dark);
+  --color-uni-gold: var(--uni-gold);
+  --color-uni-gold-light: var(--uni-gold-light);
+  --color-uni-light: var(--uni-light);
+  --color-uni-accent: var(--uni-accent);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* ── Galerie marquee ── */
+@keyframes marquee-scroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-25%); }
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee-scroll 35s linear infinite;
+}
+
+.marquee-track:hover {
+  animation-play-state: paused;
+}

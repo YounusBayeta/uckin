@@ -1,0 +1,20 @@
+services:
+
+  # ─────────────────────────────────────────
+  # UCKIN — Next.js front-end
+  # ─────────────────────────────────────────
+  uckin-web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: uckin-web
+    restart: always
+    environment:
+      - NODE_ENV=production
+    networks:
+      - proxy-network
+    # PAS de ports exposés au host — NPM s'en charge
+
+networks:
+  proxy-network:
+    external: true
