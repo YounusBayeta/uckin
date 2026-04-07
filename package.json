@@ -4,9 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "install:all": "cd my-app && pnpm install && cd ../espace-etudiant && pnpm install && cd ../Auth && pnpm install",
     "dev:all": "concurrently --names \"site,etudiant,auth\" --prefix-colors \"blue,green,yellow\" \"npm run dev --prefix my-app\" \"npm run dev --prefix espace-etudiant\" \"pnpm --prefix Auth dev\"",
     "dev:site": "npm run dev --prefix my-app",
     "dev:etudiant": "npm run dev --prefix espace-etudiant",
+    "dev:auth": "pnpm --prefix Auth dev",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
