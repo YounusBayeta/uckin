@@ -311,10 +311,6 @@ function MainNav({
 
   useEffect(() => {
     if (searchOpen && searchRef.current) searchRef.current.focus();
-    if (!searchOpen) {
-      setSearchQuery("");
-      setSearchResults([]);
-    }
   }, [searchOpen]);
 
   const allLinks = navItems.flatMap((item) =>
@@ -335,7 +331,15 @@ function MainNav({
     if (e.key === "Enter" && searchResults.length > 0) {
       window.location.hash = searchResults[0].href.replace("#", "");
       setSearchOpen(false);
+      setSearchQuery("");
+      setSearchResults([]);
     }
+  };
+
+  const handleSearchResultClick = () => {
+    setSearchOpen(false);
+    setSearchQuery("");
+    setSearchResults([]);
   };
 
   return (
@@ -393,7 +397,13 @@ function MainNav({
               />
             </div>
             <button
-              onClick={() => setSearchOpen(!searchOpen)}
+              onClick={() => {
+                if (searchOpen) {
+                  setSearchQuery("");
+                  setSearchResults([]);
+                }
+                setSearchOpen(!searchOpen);
+              }}
               className="flex items-center justify-center w-10 h-10 rounded-full hover:bg-uni-light text-gray-600 hover:text-uni-primary transition-colors duration-200"
               aria-label={searchOpen ? "Fermer la recherche" : "Ouvrir la recherche"}
             >
@@ -409,7 +419,7 @@ function MainNav({
                     <li key={r.href}>
                       <Link
                         href={r.href}
-                        onClick={() => setSearchOpen(false)}
+                        onClick={handleSearchResultClick}
                         className="block px-4 py-2 text-sm text-gray-700 hover:bg-uni-light hover:text-uni-primary transition-colors"
                       >
                         {r.label}

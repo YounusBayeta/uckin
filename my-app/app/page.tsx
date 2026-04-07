@@ -310,7 +310,7 @@ export default function Home() {
                 <div className="w-10 h-10 rounded-lg bg-uni-gold text-uni-primary-dark flex items-center justify-center font-bold">E</div>
                 <h3 className="font-bold text-gray-900">Sciences Informatiques</h3>
               </div>
-              <p className="text-sm text-gray-500">Technologies de l'information, systèmes informatiques et gestion numérique.</p>
+              <p className="text-sm text-gray-500">Technologies de l&apos;information, systèmes informatiques et gestion numérique.</p>
             </div>
           </div>
         </div>
