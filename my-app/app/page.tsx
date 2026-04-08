@@ -1,36 +1,12 @@
-import Link from "next/link";
 import Image from "next/image";
+import HeroSection from "./components/HeroSection";
 
 export default function Home() {
   return (
     <main className="bg-white">
 
       {/* ── HERO ── */}
-      <section className="relative bg-uni-primary-dark overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-uni-primary-dark via-uni-primary to-uni-primary-dark opacity-90" />
-        <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E\")" }} />
-        <div className="relative max-w-7xl mx-auto px-6 py-28 sm:py-36 text-center">
-          <p className="text-sm font-semibold text-uni-gold tracking-widest uppercase mb-4">Soyez les Bienvenus</p>
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white tracking-tight">
-            {"Université Chrétienne de Kinshasa"}
-          </h1>
-          <p className="mt-4 text-3xl sm:text-4xl font-extrabold text-uni-gold" style={{ fontFamily: "var(--font-playfair), Georgia, serif" }}>
-            UCKIN
-          </p>
-          <p className="mt-4 text-sm text-white/50 font-medium">
-            {"Détenteur d'agrément n°069/0106 du 12/12/2006"}
-          </p>
-          <p className="mt-3 text-lg text-white/60 italic">Sciences et progrès par la foi</p>
-          <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link href="/register" className="px-8 py-3.5 bg-uni-gold text-uni-primary-dark font-bold rounded-xl hover:bg-uni-gold-light transition-colors shadow-lg">
-              {"S'inscrire"}
-            </Link>
-            <Link href="#facultes" className="px-8 py-3.5 border-2 border-white/30 text-white font-semibold rounded-xl hover:bg-white/10 transition-colors">
-              Découvrir nos facultés
-            </Link>
-          </div>
-        </div>
-      </section>
+      <HeroSection />
 
       {/* ── GALERIE BÂTIMENTS ── */}
       <section className="bg-uni-primary-dark overflow-hidden">
@@ -221,50 +197,90 @@ export default function Home() {
       </section>
 
       {/* ── FACULTÉS & FILIÈRES ── */}
-      <section id="facultes" className="py-20 bg-uni-light">
-        <div className="max-w-7xl mx-auto px-6">
+      <section id="facultes" className="relative py-20 bg-uni-light overflow-hidden">
+        {/* Mortarboard watermark */}
+        <div className="pointer-events-none absolute inset-0 flex items-center justify-center" aria-hidden="true">
+          <span className="text-[32rem] leading-none opacity-[0.04] blur-sm select-none">🎓</span>
+        </div>
+
+        <div className="relative max-w-7xl mx-auto px-6">
           <div className="text-center mb-14" data-aos="fade-up">
             <p className="text-sm font-semibold text-uni-gold tracking-widest uppercase mb-3">Formations</p>
             <h2 className="text-3xl sm:text-4xl font-bold text-gray-900">Facultés et filières organisées</h2>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {/* Théologie */}
+            {/* A — Théologie */}
             <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-lg transition-shadow" data-aos="fade-up">
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-10 h-10 rounded-lg bg-uni-primary text-white flex items-center justify-center font-bold">A</div>
                 <h3 className="font-bold text-gray-900">Théologie Évangélique</h3>
               </div>
               <ul className="space-y-2">
-                {["Ancien Testament", "Nouveau Testament", "Théologie Systématique", "Histoire de l'Église", "Missiologie", "Théologie Pratique"].map((d) => (
+                {[
+                  "Département de l'Ancien Testament",
+                  "Département du Nouveau Testament",
+                  "Département de la Théologie Systématique",
+                  "Département de l'Histoire de l'Église",
+                  "Département de la Missiologie",
+                  "Département de la Théologie Pratique",
+                ].map((d) => (
                   <li key={d} className="flex items-center gap-2 text-sm text-gray-600">
-                    <span className="w-1.5 h-1.5 rounded-full bg-uni-gold" />
+                    <span className="w-1.5 h-1.5 rounded-full bg-uni-gold shrink-0" />
                     {d}
                   </li>
                 ))}
               </ul>
             </div>
 
-            {/* Médecine */}
+            {/* B — Médecine Humaine */}
             <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-lg transition-shadow" data-aos="fade-up" data-aos-delay="50">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-lg bg-uni-accent text-white flex items-center justify-center font-bold">B</div>
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-10 h-10 rounded-lg bg-uni-accent text-white flex items-center justify-center font-bold shrink-0">B</div>
                 <h3 className="font-bold text-gray-900">Médecine Humaine</h3>
               </div>
-              <p className="text-sm text-gray-500">Formation médicale complète pour les futurs professionnels de santé.</p>
+              <p className="text-sm text-gray-500 leading-relaxed mb-5">
+                {"Formation approfondie dans les disciplines qui étudient l'être humain dans ses dimensions médicale, sociale et culturelle."}
+              </p>
+              <div className="space-y-4">
+                <div>
+                  <p className="text-xs font-bold text-uni-primary uppercase mb-2">1. Médecine Générale</p>
+                  <div className="flex flex-wrap gap-1.5">
+                    {["Anatomie & Physiologie", "Sémiologie Médicale", "Médecine Interne", "Chirurgie Générale", "Médecine d'Urgence"].map((m) => (
+                      <span key={m} className="px-2.5 py-1 bg-uni-light text-xs text-gray-700 rounded-full">{m}</span>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <p className="text-xs font-bold text-uni-primary uppercase mb-2">2. Santé Publique & Communautaire</p>
+                  <div className="flex flex-wrap gap-1.5">
+                    {["Épidémiologie", "Santé Maternelle & Infantile", "Nutrition Clinique", "Hygiène & Assainissement", "Gestion des Services de Santé"].map((m) => (
+                      <span key={m} className="px-2.5 py-1 bg-uni-light text-xs text-gray-700 rounded-full">{m}</span>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <p className="text-xs font-bold text-uni-primary uppercase mb-2">3. Sciences Paramédicales</p>
+                  <div className="flex flex-wrap gap-1.5">
+                    {["Soins Infirmiers", "Kinésithérapie", "Laboratoire Médical", "Radiologie & Imagerie", "Pharmacologie"].map((m) => (
+                      <span key={m} className="px-2.5 py-1 bg-uni-light text-xs text-gray-700 rounded-full">{m}</span>
+                    ))}
+                  </div>
+                </div>
+              </div>
             </div>
 
-            {/* Admin / Éco / Développement */}
+            {/* C — Admin / Éco / Développement */}
             <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-lg transition-shadow md:col-span-2 lg:col-span-1" data-aos="fade-up" data-aos-delay="100">
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-lg bg-uni-gold text-uni-primary-dark flex items-center justify-center font-bold">C</div>
+                <div className="w-10 h-10 rounded-lg bg-uni-gold text-uni-primary-dark flex items-center justify-center font-bold shrink-0">C</div>
                 <h3 className="font-bold text-gray-900 text-sm leading-tight">Admin. des Affaires, Sciences Éco. & Développement</h3>
               </div>
               <div className="space-y-4">
                 <div>
                   <p className="text-xs font-bold text-uni-primary uppercase mb-2">1. Administration des Affaires</p>
                   <div className="flex flex-wrap gap-1.5">
-                    {["Management", "Marketing", "Entrepreneuriat", "Gestion Financière", "Comptabilité & Audit"].map((m) => (
+                    {["Management des Organisations", "Marketing et Communication", "Entrepreneuriat et Innovation", "Gestion Financière", "Comptabilité et Audit"].map((m) => (
                       <span key={m} className="px-2.5 py-1 bg-uni-light text-xs text-gray-700 rounded-full">{m}</span>
                     ))}
                   </div>
@@ -272,7 +288,7 @@ export default function Home() {
                 <div>
                   <p className="text-xs font-bold text-uni-primary uppercase mb-2">2. Sciences Économiques</p>
                   <div className="flex flex-wrap gap-1.5">
-                    {["Éco. Mathématique", "Éco. Monétaire", "Éco. Internationale", "Politiques Éco.", "Éco. Rurale"].map((m) => (
+                    {["Économie Mathématique", "Économie Monétaire et Financière", "Économie Internationale", "Politiques Économiques et Développement", "Économie Rurale"].map((m) => (
                       <span key={m} className="px-2.5 py-1 bg-uni-light text-xs text-gray-700 rounded-full">{m}</span>
                     ))}
                   </div>
@@ -280,7 +296,7 @@ export default function Home() {
                 <div>
                   <p className="text-xs font-bold text-uni-primary uppercase mb-2">3. Développement</p>
                   <div className="flex flex-wrap gap-1.5">
-                    {["Planification", "Dév. Communautaire", "Gouvernance", "Gestion de Projets"].map((m) => (
+                    {["Planification et Gestion du Développement", "Développement Communautaire", "Gouvernance et Politiques Publiques", "Gestion des Projets de Développement"].map((m) => (
                       <span key={m} className="px-2.5 py-1 bg-uni-light text-xs text-gray-700 rounded-full">{m}</span>
                     ))}
                   </div>
@@ -288,7 +304,7 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Droit */}
+            {/* D — Droit */}
             <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-lg transition-shadow" data-aos="fade-up" data-aos-delay="150">
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-10 h-10 rounded-lg bg-uni-primary text-white flex items-center justify-center font-bold">D</div>
@@ -304,13 +320,20 @@ export default function Home() {
               </ul>
             </div>
 
-            {/* Informatique */}
+            {/* E — Sciences Informatiques */}
             <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-lg transition-shadow" data-aos="fade-up" data-aos-delay="200">
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-10 h-10 rounded-lg bg-uni-gold text-uni-primary-dark flex items-center justify-center font-bold">E</div>
                 <h3 className="font-bold text-gray-900">Sciences Informatiques</h3>
               </div>
-              <p className="text-sm text-gray-500">Technologies de l'information, systèmes informatiques et gestion numérique.</p>
+              <ul className="space-y-2">
+                {["Génie Logiciel", "Communication Numérique", "Réseaux et Télécoms", "Intelligence Artificielle"].map((d) => (
+                  <li key={d} className="flex items-center gap-2 text-sm text-gray-600">
+                    <span className="w-1.5 h-1.5 rounded-full bg-uni-gold" />
+                    {d}
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
         </div>

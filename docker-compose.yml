@@ -9,6 +9,14 @@ services:
     restart: always
     environment:
       - NODE_ENV=production
+      - NEXTAUTH_URL=https://uckin.ac.cd
+      - AUTH_SECRET=${AUTH_SECRET}
+      - AUTH_GOOGLE_ID=${AUTH_GOOGLE_ID}
+      - AUTH_GOOGLE_SECRET=${AUTH_GOOGLE_SECRET}
+      - NEXT_PUBLIC_AUTH_SERVICE_URL=${AUTH_PUBLIC_URL}
+      # URL interne Docker pour les sondes serveur (ne passe pas par internet)
+      - AUTH_SERVICE_INTERNAL_URL=http://auth-service:4000
+      - PORTAL_INTERNAL_URL=http://uckin-portal:3001
     networks:
       - proxy-network
 
