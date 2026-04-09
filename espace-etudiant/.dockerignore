@@ -1,0 +1,30 @@
+# Build output
+.next/
+out/
+
+# Dependencies (rebuilt inside Docker)
+node_modules/
+
+# Local env files — NE JAMAIS copier dans l'image, ils écrasent les ARG Docker
+.env*.local
+.env
+
+# Version control
+.git/
+.gitignore
+
+# Editor / OS artefacts
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# Docker files (no recursive copy)
+Dockerfile
+docker-compose*.yml
