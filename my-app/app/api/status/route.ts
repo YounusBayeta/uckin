@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 const AUTH_SERVICE_URL =
   process.env.AUTH_SERVICE_URL || "http://localhost:4000";
 const STUDENT_PORTAL_URL =
-  process.env.NEXT_PUBLIC_STUDENT_PORTAL_URL || "http://localhost:3001";
+  process.env.NEXT_PUBLIC_STUDENT_PORTAL_URL || "https://etudiant.uckin.ac.cd/";
 
 interface ServiceStatus {
   name: string;

@@ -18,6 +18,10 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
+# NEXT_PUBLIC_* sont inlinées au build time par Next.js
+ARG NEXT_PUBLIC_AUTH_SERVICE_URL
+ENV NEXT_PUBLIC_AUTH_SERVICE_URL=$NEXT_PUBLIC_AUTH_SERVICE_URL
+
 ENV NEXT_TELEMETRY_DISABLED=1
 RUN pnpm build
 

@@ -1,5 +1,5 @@
 # ─────────────────────────────────────────────────────────────────
-# etudiant.uckin.ac.cd — Espace Étudiant (Next.js, port 3001)
+# etudiant.uckin.ac.cd — Espace Étudiant (Next.js, port 3000)
 #
 # INSTALLATION SUR LE SERVEUR :
 #   sudo cp etudiant.uckin.ac.cd /etc/nginx/sites-available/

@@ -6,7 +6,7 @@ import Image from "next/image";
 
 /* ──────────────────────────── DATA ──────────────────────────── */
 
-const STUDENT_PORTAL_URL = process.env.NEXT_PUBLIC_STUDENT_PORTAL_URL || "http://localhost:3001";
+const STUDENT_PORTAL_URL = process.env.NEXT_PUBLIC_STUDENT_PORTAL_URL || "https://etudiant.uckin.ac.cd/";
 
 const utilityLinks = [
   { label: "Espace Étudiant", href: STUDENT_PORTAL_URL },
