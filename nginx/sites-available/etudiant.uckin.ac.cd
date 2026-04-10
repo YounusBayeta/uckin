@@ -43,9 +43,9 @@ server {
     add_header X-Frame-Options "SAMEORIGIN" always;
     add_header Referrer-Policy "strict-origin-when-cross-origin" always;
 
-    # ── Proxy vers le conteneur uckin-portal (port 3001) ──────────
+    # ── Proxy vers le conteneur uckin-portal (port 3000) ──────────
     location / {
-        proxy_pass         http://187.124.183.148:3001;
+        proxy_pass         http://187.124.183.148:3000;
         proxy_http_version 1.1;
 
         # WebSocket (Next.js streaming / fast refresh)
@@ -64,7 +64,7 @@ server {
 
     # ── Cache long sur les assets statiques Next.js ───────────────
     location /_next/static/ {
-        proxy_pass         http://187.124.183.148:3001;
+        proxy_pass         http://187.124.183.148:3000;
         proxy_set_header   Host $host;
         add_header         Cache-Control "public, max-age=31536000, immutable";
         access_log         off;
