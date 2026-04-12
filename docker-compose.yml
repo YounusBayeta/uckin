@@ -1,6 +1,27 @@
 services:
+  traefik:
+    image: traefik:v3.0
+    container_name: traefik
+    command:
+      - --api.dashboard=true
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --providers.docker.network=proxy-network
+      - --entrypoints.web.address=:80
+      - --entrypoints.websecure.address=:443
+      - --certificatesresolvers.myresolver.acme.tlschallenge=true
+      - --certificatesresolvers.myresolver.acme.email=ton@email.com
+      - --certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./letsencrypt:/letsencrypt
+      - ./traefik.yml:/traefik.yml:ro
+    networks:
+      - proxy-network
 
-  # ── Site vitrine (Next.js) ─────────────────────────────────
   uckin-web:
     build:
       context: ./my-app
@@ -15,13 +36,16 @@ services:
       - AUTH_SECRET=${AUTH_SECRET}
       - AUTH_GOOGLE_ID=${AUTH_GOOGLE_ID}
       - AUTH_GOOGLE_SECRET=${AUTH_GOOGLE_SECRET}
-      # URL interne Docker pour les sondes serveur (ne passe pas par internet)
       - AUTH_SERVICE_INTERNAL_URL=http://auth-service:4000
       - PORTAL_INTERNAL_URL=http://uckin-portal:3000
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.uckin-web.rule=Host(`uckin.ac.cd`)"
+      - "traefik.http.routers.uckin-web.entrypoints=web,websecure"
+      - "traefik.http.routers.uckin-web.tls.certresolver=myresolver"
     networks:
       - proxy-network
 
-  # ── Espace étudiant (Next.js) ──────────────────────────────
   uckin-portal:
     build:
       context: ./espace-etudiant
@@ -35,17 +59,21 @@ services:
       - NODE_ENV=production
     depends_on:
       - auth-service
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.uckin-portal.rule=Host(`portal.uckin.ac.cd`)"
+      - "traefik.http.routers.uckin-portal.entrypoints=web,websecure"
+      - "traefik.http.routers.uckin-portal.tls.certresolver=myresolver"
     networks:
       - proxy-network
 
-  # ── PostgreSQL ─────────────────────────────────────────────
   postgres:
     image: postgres:16-alpine
     container_name: uckin-postgres
     restart: unless-stopped
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-uckin_user}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-uckin_password}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-uckin_password@@@}
       POSTGRES_DB: ${POSTGRES_DB:-uckin_auth}
     volumes:
       - pgdata:/var/lib/postgresql/data
@@ -57,7 +85,6 @@ services:
     networks:
       - internal
 
-  # ── Redis ──────────────────────────────────────────────────
   redis:
     image: redis:7-alpine
     container_name: uckin-redis
@@ -72,7 +99,6 @@ services:
     networks:
       - internal
 
-  # ── Auth Service (Fastify) ─────────────────────────────────
   auth-service:
     build:
       context: ./Auth
@@ -100,6 +126,11 @@ services:
         condition: service_healthy
     volumes:
       - ./Auth/keys:/app/keys:ro
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.uckin-auth.rule=Host(`api.uckin.ac.cd`)"
+      - "traefik.http.routers.uckin-auth.entrypoints=web,websecure"
+      - "traefik.http.routers.uckin-auth.tls.certresolver=myresolver"
     networks:
       - proxy-network
       - internal
