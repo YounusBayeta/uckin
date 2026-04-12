@@ -16,6 +16,6 @@ api:
 certificatesResolvers:
   myresolver:
     acme:
-      email: "ton@email.com"
+      email: "uckin@outlook.fr"
       storage: "/letsencrypt/acme.json"
       tlsChallenge: true

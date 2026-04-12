@@ -1,0 +1,25 @@
+# traefik_dynamic.yml
+# (Middlewares pour sécurité, rate limiting, et auth dashboard)
+
+http:
+  middlewares:
+    # Middleware pour rediriger HTTP vers HTTPS
+    redirect-to-https:
+      redirectScheme:
+        scheme: https
+        permanent: true
+    # Middleware pour headers de sécurité (exemple)
+    secure-headers:
+      headers:
+        frameDeny: true
+        sslRedirect: true
+        browserXssFilter: true
+        contentTypeNosniff: true
+        stsSeconds: 31536000
+        stsIncludeSubdomains: true
+        stsPreload: true
+    # Auth basique pour dashboard (à activer plus tard)
+    traefik-dashboard-auth:
+      basicAuth:
+        users:
+          - "admin:$apr1$H6uskkkW$IgXLP6ewTrSuBkTrqE8wj/" # admin:password (à changer)

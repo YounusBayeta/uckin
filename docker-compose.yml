@@ -1,27 +1,25 @@
-services:
+  # ── Traefik v3 (remplace NGINX Proxy Manager) ─────────────
   traefik:
     image: traefik:v3.0
     container_name: traefik
+    # Commandes Traefik pour activer dashboard, providers, entrypoints, ACME, etc.
     command:
-      - --api.dashboard=true
-      - --providers.docker=true
-      - --providers.docker.exposedbydefault=false
-      - --providers.docker.network=proxy-network
-      - --entrypoints.web.address=:80
-      - --entrypoints.websecure.address=:443
-      - --certificatesresolvers.myresolver.acme.tlschallenge=true
-      - --certificatesresolvers.myresolver.acme.email=ton@email.com
-      - --certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json
+      - --configFile=/traefik.yml
     ports:
-      - "80:80"
-      - "443:443"
+      - "80:80"      # Entrypoint HTTP
+      - "443:443"    # Entrypoint HTTPS
+      - "8080:8080"  # Dashboard Traefik (à protéger en prod)
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ./letsencrypt:/letsencrypt
-      - ./traefik.yml:/traefik.yml:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro  # Découverte auto Docker
+      - ./traefik.yml:/traefik.yml:ro                 # Config statique
+      - ./traefik_dynamic.yml:/traefik_dynamic.yml:ro # Config dynamique (middlewares)
+      - ./letsencrypt/acme.json:/letsencrypt/acme.json # Stockage ACME
     networks:
-      - proxy-network
+      - traefik-public
+    restart: unless-stopped
+    # Pas d'exposition de ports sur les apps, Traefik gère tout
 
+  # ── Site vitrine (Next.js) ───────────────────────────────
   uckin-web:
     build:
       context: ./my-app
@@ -39,13 +37,22 @@ services:
       - AUTH_SERVICE_INTERNAL_URL=http://auth-service:4000
       - PORTAL_INTERNAL_URL=http://uckin-portal:3000
     labels:
+      # Active le routage Traefik pour ce service
       - "traefik.enable=true"
+      # Règle de routage par nom de domaine
       - "traefik.http.routers.uckin-web.rule=Host(`uckin.ac.cd`)"
+      # Entrypoints HTTP/HTTPS
       - "traefik.http.routers.uckin-web.entrypoints=web,websecure"
+      # Port interne exposé par l'app (Next.js = 3000)
+      - "traefik.http.services.uckin-web.loadbalancer.server.port=3000"
+      # TLS Let's Encrypt
       - "traefik.http.routers.uckin-web.tls.certresolver=myresolver"
+      # Redirection HTTP->HTTPS
+      - "traefik.http.routers.uckin-web.middlewares=redirect-to-https@file,secure-headers@file"
     networks:
-      - proxy-network
+      - traefik-public
 
+  # ── Espace étudiant (Next.js) ──────────────────────────────
   uckin-portal:
     build:
       context: ./espace-etudiant
@@ -63,9 +70,11 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.uckin-portal.rule=Host(`portal.uckin.ac.cd`)"
       - "traefik.http.routers.uckin-portal.entrypoints=web,websecure"
+      - "traefik.http.services.uckin-portal.loadbalancer.server.port=3000"
       - "traefik.http.routers.uckin-portal.tls.certresolver=myresolver"
+      - "traefik.http.routers.uckin-portal.middlewares=redirect-to-https@file,secure-headers@file"
     networks:
-      - proxy-network
+      - traefik-public
 
   postgres:
     image: postgres:16-alpine
@@ -99,6 +108,7 @@ services:
     networks:
       - internal
 
+  # ── Auth Service (Fastify) ────────────────────────────────
   auth-service:
     build:
       context: ./Auth
@@ -130,16 +140,18 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.uckin-auth.rule=Host(`api.uckin.ac.cd`)"
       - "traefik.http.routers.uckin-auth.entrypoints=web,websecure"
+      - "traefik.http.services.uckin-auth.loadbalancer.server.port=4000"
       - "traefik.http.routers.uckin-auth.tls.certresolver=myresolver"
+      - "traefik.http.routers.uckin-auth.middlewares=redirect-to-https@file,secure-headers@file"
     networks:
-      - proxy-network
+      - traefik-public
       - internal
 
 networks:
-  proxy-network:
-    external: true
+  traefik-public:
+    external: true # Réseau public partagé pour Traefik et apps web
   internal:
-    driver: bridge
+    driver: bridge # Réseau privé pour DB/Redis
 
 volumes:
   pgdata:
