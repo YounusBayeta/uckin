@@ -38,7 +38,6 @@ const navItems: NavCategory[] = [
         links: [
           { label: "Théologie Évangélique", href: "#theologie", description: "Foi chrétienne & enseignement" },
           { label: "Admin. des Affaires Économiques", href: "#admin-affaires", description: "Gestion & économie" },
-          { label: "Sciences Humaines", href: "#sciences-humaines", description: "Psychologie & sociologie" },
           { label: "Droit", href: "#droit", description: "Formation juridique" },
           { label: "Gestion Informatique", href: "#gestion-info", description: "Technologies & systèmes" },
         ],
@@ -85,7 +84,6 @@ const navItems: NavCategory[] = [
         title: "Laboratoires",
         links: [
           { label: "Sciences & Technologies", href: "#lab-sciences" },
-          { label: "Sciences Humaines", href: "#lab-sh" },
           { label: "Santé & Médecine", href: "#lab-sante" },
         ],
       },

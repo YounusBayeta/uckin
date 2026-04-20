@@ -1,11 +1,10 @@
-# ──────────────────────────────────────────────
 # Stage 1 — deps : install production dependencies
 # ──────────────────────────────────────────────
 FROM node:20-alpine AS deps
 RUN corepack enable && corepack prepare pnpm@latest --activate
 WORKDIR /app
 
-COPY package.json pnpm-lock.yaml ./
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 RUN pnpm install --frozen-lockfile
 
 # ──────────────────────────────────────────────
@@ -20,9 +19,7 @@ COPY . .
 
 # NEXT_PUBLIC_* sont inlinées au build time par Next.js
 ARG NEXT_PUBLIC_AUTH_SERVICE_URL
-ARG NEXT_PUBLIC_MAIN_SITE_URL
 ENV NEXT_PUBLIC_AUTH_SERVICE_URL=$NEXT_PUBLIC_AUTH_SERVICE_URL
-ENV NEXT_PUBLIC_MAIN_SITE_URL=$NEXT_PUBLIC_MAIN_SITE_URL
 
 ENV NEXT_TELEMETRY_DISABLED=1
 RUN pnpm build
@@ -48,5 +45,3 @@ USER nextjs
 EXPOSE 3000
 ENV PORT=3000
 ENV HOSTNAME=0.0.0.0
-
-CMD ["node", "server.js"]

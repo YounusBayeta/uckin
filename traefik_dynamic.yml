@@ -22,4 +22,4 @@ http:
     traefik-dashboard-auth:
       basicAuth:
         users:
-          - "admin:$apr1$H6uskkkW$IgXLP6ewTrSuBkTrqE8wj/" # admin:password (à changer)
+          - "admin:uckin@outlook.fr" # admin:password (à changer)

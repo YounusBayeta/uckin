@@ -188,8 +188,8 @@ export default function Home() {
                 <Image src="/images/logokin.jpeg" alt="UCKIN" width={48} height={48} className="rounded-full" />
               </div>
               <div className="text-left">
-                <p className="text-xs text-white/60 uppercase tracking-wide font-semibold">Recteur a.i.</p>
-                <p className="text-white font-bold text-lg">Rév. Dr. LOMBO SEDZO Laddy (PhD)</p>
+                <p className="text-xs text-white uppercase tracking-wide font-semibold text-center">Formations</p>
+                <p className="text-white font-bold text-lg text-center">Facultés et filières organisées</p>
               </div>
             </div>
           </div>
@@ -205,8 +205,8 @@ export default function Home() {
 
         <div className="relative max-w-7xl mx-auto px-6">
           <div className="text-center mb-14" data-aos="fade-up">
-            <p className="text-sm font-semibold text-uni-gold tracking-widest uppercase mb-3">Formations</p>
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900">Facultés et filières organisées</h2>
+            <p className="text-sm font-semibold text-uni-gold tracking-widest uppercase mb-3"></p>
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900"></h2>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -339,24 +339,135 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── CAMPUS PHOTOS ── */}
+      {/* ── ADMINISTRATEURS ── */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-6">
+          {/* En-tête */}
           <div className="text-center mb-14" data-aos="fade-up">
-            <p className="text-sm font-semibold text-uni-gold tracking-widest uppercase mb-3">Notre campus</p>
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900">Découvrez nos installations</h2>
+            <span className="inline-block text-[11px] font-semibold tracking-[.15em] uppercase text-[#0F6E56] border border-[#1D9E75] px-4 py-1 rounded-full mb-3">
+              Gouvernance
+            </span>
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900">
+              Membres de comite de gestion 
+            </h2>
+            <p className="mt-2 text-sm text-gray-500">
+              {"L'équipe dirigeante de l'Université Chrétienne de Kinshasa"}
+            </p>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+          {/* Grille 6 cartes */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
             {[
-              { src: "/images/bat1.jpeg", label: "Bâtiment principal" },
-              { src: "/images/Bat2.jpeg", label: "Départements" },
-              { src: "/images/Bat3.jpeg", label: "Église" },
-              { src: "/images/bat6.jpeg", label: "Bibliothèque" },
-              { src: "/images/bat7.jpeg", label: "Campus" },
-            ].map((img, i) => (
-              <div key={i} className="group relative rounded-xl overflow-hidden aspect-[4/3] shadow-sm" data-aos="zoom-in" data-aos-delay={i * 60}>
-                <Image src={img.src} alt={img.label} fill className="object-cover group-hover:scale-105 transition-transform duration-500" sizes="(max-width: 768px) 50vw, 33vw" />
-                <p className="absolute bottom-3 left-3 text-white text-sm font-semibold opacity-0 group-hover:opacity-100 transition-opacity">{img.label}</p>
+              {
+                initials: "LS",
+                name: "Rév. Dr. LOMBO SEDZO Laddy",
+                role: "Recteur (PhD)",
+                dept: "Rectorat",
+                dots: 3,
+                featured: true,
+                image: "/images/Recteur.jpeg",
+              },
+              {
+                initials: "VR",
+                name: "Rév. Dr. LOMBO SEDZO Laddy",
+                role: "Professeur",
+                dept: "SGAC",
+                dots: 2,
+                image: "/images/sg.jpeg",
+              },
+              {
+                initials: "MG",
+                name: "KOMUESA KALUNGA ADOLPHE",
+                role: "Professeur",
+                dept: "SGR ",
+                dots: 2,
+                image: "/images/budget.jpeg",
+              },
+              {
+                initials: "KT",
+                name: "Rév. KINKELA TEZULUA Désiré",
+                role: "Professeur",
+                dept: "SGA",
+                dots: 1,
+                image: "/images/administratif.jpeg",
+              },
+              // {
+              //   initials: "MG",
+              //   name: "Mr. MUYITA GUZWELA Jean Claude",
+              //   role: "Doctorant",
+              //   dept: "SGA Recherche",
+              //   dots: 2,
+              //   image: "/images/sga.jpeg",
+              // },
+              {
+                initials: "CA",
+                name: "MUYITA GUZWELA Jean Claude",
+                role: "Professeur",
+                dept: "AB",
+                dots: 3,
+                image: "/images/6.jpeg",
+              },
+            ].map((admin, i) => (
+              <div
+                key={i}
+                data-aos="fade-up"
+                data-aos-delay={i * 60}
+                className={[
+                  "group relative rounded-[14px] overflow-hidden cursor-pointer",
+                  "transition-all duration-300",
+                  "hover:-translate-y-2 hover:border-[#1D9E75]",
+                  "hover:[box-shadow:0_14px_36px_-8px_rgba(15,110,86,0.20)]",
+                  admin.featured
+                    ? "border border-[rgba(29,158,117,0.35)] bg-gradient-to-br from-white to-[#E1F5EE]"
+                    : "border border-gray-200 bg-white",
+                ].join(" ")}
+              >
+                {/* Coins futuristes */}
+                <span className="absolute top-[7px] left-[7px] w-[14px] h-[14px] border-t-[1.5px] border-l-[1.5px] border-[#1D9E75] opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 pointer-events-none" />
+                <span className="absolute bottom-[7px] right-[7px] w-[14px] h-[14px] border-b-[1.5px] border-r-[1.5px] border-[#1D9E75] opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 pointer-events-none" />
+                {/* Badge titre */}
+                {/* Photo / Avatar */}
+                <div className="relative w-full pt-[105%] overflow-hidden">
+                  {admin.image ? (
+                    <Image
+                      src={admin.image}
+                      alt={admin.name}
+                      fill
+                      sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 16vw"
+                      className="object-cover grayscale-[15%] group-hover:grayscale-0 transition-all duration-500"
+                    />
+                  ) : (
+                    <div className="absolute inset-0 flex items-center justify-center bg-[#04342C] text-[#5DCAA5] text-[1.7rem] font-medium tracking-wider select-none">
+                      {admin.initials}
+                    </div>
+                  )}
+                  <div className="absolute inset-0 bg-gradient-to-t from-[rgba(4,52,44,0.82)] via-transparent to-transparent" />
+                  <span className="absolute bottom-2 left-1/2 -translate-x-1/2 z-10 text-[9px] font-medium tracking-[.12em] uppercase bg-[rgba(4,52,44,0.9)] border border-[#1D9E75] text-[#9FE1CB] px-[9px] py-[2px] rounded-full whitespace-nowrap">
+                    {admin.dept}
+                  </span>
+                </div>
+                {/* Infos texte */}
+                <div className="px-[10px] pt-[10px] pb-[13px] text-center">
+                  <div className="w-6 h-[1px] bg-[rgba(29,158,117,0.3)] mx-auto mb-[7px]" />
+                  <p className="text-[11.5px] font-semibold text-gray-900 leading-snug mb-[3px]">
+                    {admin.name}
+                  </p>
+                  <p className="text-[10px] text-gray-500 leading-snug mb-[7px]">
+                    {admin.role}
+                  </p>
+                  <div className="flex justify-center gap-[3px]">
+                    {[1, 2, 3, 4, 5].map((d) => (
+                      <span
+                        key={d}
+                        className={[
+                          "w-1 h-1 rounded-full transition-colors duration-300",
+                          d <= admin.dots
+                            ? "bg-[#1D9E75] group-hover:bg-[#5DCAA5]"
+                            : "bg-gray-200",
+                        ].join(" ")}
+                      />
+                    ))}
+                  </div>
+                </div>
               </div>
             ))}
           </div>

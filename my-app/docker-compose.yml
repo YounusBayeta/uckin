@@ -1,20 +1,23 @@
 services:
-
-  # ─────────────────────────────────────────
-  # UCKIN — Next.js front-end
-  # ─────────────────────────────────────────
   uckin-web:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: registry.gitlab.com/uckin/uckin-web:latest
     container_name: uckin-web
     restart: always
     environment:
       - NODE_ENV=production
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.uckin-web.rule=Host(`uckin.ac.cd`)"
+      - "traefik.http.routers.uckin-web.entrypoints=websecure"
+      - "traefik.http.routers.uckin-web.tls.certresolver=letsencrypt"
+      - "traefik.http.services.uckin-web.loadbalancer.server.port=80"
     networks:
-      - proxy-network
-    # PAS de ports exposés au host — NPM s'en charge
+      - traefik-proxy
+      - internal
 
 networks:
-  proxy-network:
+  traefik-proxy:
     external: true
+  internal:
+    driver: bridge
+    internal: true

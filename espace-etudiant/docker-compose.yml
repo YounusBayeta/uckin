@@ -1,0 +1,23 @@
+services:
+  uckin-web:
+    image: registry.gitlab.com/uckin/espace-etudiant:latest
+    container_name: espace-etudiant
+    restart: always
+    environment:
+      - NODE_ENV=production
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.uckin/espace-etudiant:.rule=Host(`uckin.ac.cd`)"
+      - "traefik.http.routers.uckin/espace-etudiant:.entrypoints=websecure"
+      - "traefik.http.routers.uckin/espace-etudiant:.tls.certresolver=letsencrypt"
+      - "traefik.http.services.uckin/espace-etudiant:.loadbalancer.server.port=80"
+    networks:
+      - traefik-proxy
+      - internal
+
+networks:
+  traefik-proxy:
+    external: true
+  internal:
+    driver: bridge
+    internal: true
